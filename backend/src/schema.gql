@@ -1,0 +1,44 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type DashboardSummary {
+  totalEnergy: Float!
+  dailyCost: Float!
+  usageTime: Float!
+  total_energy_kwh: Float!
+  total_estimated_cost: Float!
+  total_hours_used: Float!
+}
+
+type DashboardDevice {
+  id: Int!
+  name: String!
+  device_type: String!
+  total_energy_kwh: Float!
+  total_estimated_cost: Float!
+  total_hours_used: Float!
+}
+
+type DashboardRoom {
+  id: Int!
+  name: String!
+  total_energy_kwh: Float!
+  total_estimated_cost: Float!
+  total_hours_used: Float!
+}
+
+type DashboardPeriod {
+  date: String!
+  total_energy_kwh: Float!
+  total_estimated_cost: Float!
+  total_hours_used: Float!
+}
+
+type Query {
+  dashboardSummary: DashboardSummary!
+  dashboardByDevice: [DashboardDevice!]!
+  dashboardByRoom: [DashboardRoom!]!
+  dashboardByPeriod: [DashboardPeriod!]!
+  graphqlStatus: String!
+}
