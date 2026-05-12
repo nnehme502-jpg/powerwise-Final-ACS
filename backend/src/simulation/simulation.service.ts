@@ -1,2 +1,22 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'; import { Pool } from 'pg'; import { PG_POOL } from '../database/database.module';
-@Injectable() export class SimulationService{ constructor(@Inject(PG_POOL) private db:Pool){} async run(userId:number,deviceId:number,hours:number){const d=await this.db.query('SELECT d.* FROM devices d JOIN rooms r ON d.room_id=r.id WHERE d.id=$1 AND r.user_id=$2',[deviceId,userId]); if(!d.rowCount) throw new NotFoundException('Device not found'); const watts=Number(d.rows[0].power_rating_watts); const energy=(watts*hours)/1000; const cost=energy*Number(process.env.ELECTRICITY_RATE || 0.27); const r=await this.db.query('INSERT INTO energy_logs(device_id,hours_used,energy_kwh,estimated_cost,logged_at) VALUES($1,$2,$3,$4,NOW()) RETURNING *',[deviceId,hours,energy,cost]); return r.rows[0]} }
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Pool } from "pg";
+import { PG_POOL } from "../database/database.module";
+@Injectable()
+export class SimulationService {
+  constructor(@Inject(PG_POOL) private db: Pool) {}
+  async run(userId: number, deviceId: number, hours: number) {
+    const d = await this.db.query(
+      "SELECT d.* FROM devices d JOIN rooms r ON d.room_id=r.id WHERE d.id=$1 AND r.user_id=$2",
+      [deviceId, userId],
+    );
+    if (!d.rowCount) throw new NotFoundException("Device not found");
+    const watts = Number(d.rows[0].power_rating_watts);
+    const energy = (watts * hours) / 1000;
+    const cost = energy * Number(process.env.ELECTRICITY_RATE || 0.27);
+    const r = await this.db.query(
+      "INSERT INTO energy_logs(device_id,hours_used,energy_kwh,estimated_cost,logged_at) VALUES($1,$2,$3,$4,NOW()) RETURNING *",
+      [deviceId, hours, energy, cost],
+    );
+    return r.rows[0];
+  }
+}

@@ -1,2 +1,11 @@
-import { IsIn, IsInt, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
-export class CreateAlertDto{ @IsInt() device_id:number; @IsNotEmpty() alert_type:string; @IsIn(['low','medium','high','critical']) severity:string; @IsOptional() title?:string; @IsOptional() message?:string; @IsOptional() threshold_metric?:string; @IsOptional() @IsNumber() threshold_value?:number; @IsOptional() @IsNumber() actual_value?:number; }
+import { IsIn, IsInt, IsNotEmpty, IsOptional, IsNumber } from "class-validator";
+export class CreateAlertDto {
+  @IsInt() device_id: number;
+  @IsNotEmpty() alert_type: string;
+  @IsIn(["low", "medium", "high", "critical"]) severity: string;
+  @IsOptional() title?: string;
+  @IsOptional() message?: string;
+  @IsOptional() threshold_metric?: string;
+  @IsOptional() @IsNumber() threshold_value?: number;
+  @IsOptional() @IsNumber() actual_value?: number;
+}
